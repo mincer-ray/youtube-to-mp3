@@ -38,7 +38,7 @@ window.onload = () => {
         .end((err, res) => {
           if (res.text === 'ready') {
             const aTag = document.createElement('a');
-            const output = `/output/${id}.mp3`;
+            const output = `/output/${id}_finished.mp3`;
             aTag.href = output;
             aTag.innerHTML = 'right click save as';
             results.appendChild(aTag);
