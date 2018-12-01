@@ -1,26 +1,30 @@
-const fs = require('fs');
-const readline = require('readline');
-const ytdl = require('ytdl-core');
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
-const ffmpeg = require('fluent-ffmpeg');
-ffmpeg.setFfmpegPath(ffmpegPath);
+const express = require('express');
+const morgan = require('morgan');
+const path = require('path');
 
-let name = 'song'
-let id = 'https://www.youtube.com/watch?v=tIdIqbv7SPo';
+const crypto = require('crypto');
 
-let stream = ytdl(id, {
-  quality: 'highestaudio',
+const yt2mp3 = require('./scripts/yt2mp3');
+
+const app = express();
+const port = 3000;
+
+app.use('/public', express.static(__dirname + '/public'));
+app.use('/output', express.static(__dirname + '/output'));
+
+app.use(morgan('combined'));
+
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
 });
 
-let start = Date.now();
+app.get('/yt2mp3', (req, res) => {
+  const url = req.query.url;
+  const id = crypto.createHash('md5').update(url).digest("hex");
+  yt2mp3(url, id).then((data) => {
+    res.send(`/output/${id}.mp3`);
+    console.log('finished');
+  });
+});
 
-ffmpeg(stream)
-  .audioBitrate(320)
-  .save(`${__dirname}/${name}.mp3`)
-  .on('progress', (p) => {
-    readline.cursorTo(process.stdout, 0);
-    process.stdout.write(`${p.targetSize}kb downloaded`);
-  })
-  .on('end', () => {
-    console.log(`\ndone, thanks - ${(Date.now() - start) / 1000}s`)});
-  
+app.listen(port, () => console.log(`Multitool listening on port ${port}!`))
