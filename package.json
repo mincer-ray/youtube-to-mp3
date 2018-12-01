@@ -1,0 +1,16 @@
+{
+  "name": "multitool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.0.16",
+    "fluent-ffmpeg": "^2.1.2",
+    "ytdl-core": "^0.28.0"
+  }
+}
