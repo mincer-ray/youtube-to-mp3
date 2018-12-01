@@ -5,7 +5,10 @@ window.onload = () => {
   const button = window.document.getElementById('submitconvert');
   const results = window.document.getElementById('fileresults');
   
-  button.addEventListener('click', () => {
+  const submit = (event) => {
+    event.preventDefault();
+    button.removeEventListener('click', submit);
+    
     const url = input.value;
     const notification = document.createElement('div');
     notification.innerHTML = 'please wait for conversion';
@@ -15,6 +18,7 @@ window.onload = () => {
     
     superagent
     .get('/yt2mp3')
+    .retry(0)
     .query({
       url
     })
@@ -23,10 +27,32 @@ window.onload = () => {
       deadline: 600000,
     })
     .end((err, res) => {
-      const aTag = document.createElement('a');
-      aTag.href = res.text;
-      aTag.innerHTML = 'right click save as';
-      results.appendChild(aTag);
+      const id = res.text;
+      
+      const getStatus = () => {
+        superagent
+        .get('/status')
+        .query({
+          id
+        })
+        .end((err, res) => {
+          if (res.text === 'ready') {
+            const aTag = document.createElement('a');
+            const output = `/output/${id}.mp3`;
+            aTag.href = output;
+            aTag.innerHTML = 'right click save as';
+            results.appendChild(aTag);
+            window.clearInterval(interval);
+            getStatus = 0;
+          } else {
+            return false;
+          }
+        })
+      }
+      
+      const interval = window.setInterval(getStatus, 10000);
     })    
-  });
+  };
+  
+  button.addEventListener('click', submit);
 }

@@ -21,6 +21,7 @@ const toMp3 = (url, name) => {
         process.stdout.write(`${p.targetSize}kb downloaded`);
       })
       .on('end', () => {
+        fs.rename(`${__dirname}/../output/${name}.mp3`, `${__dirname}/../output/${name}_finished.mp3`)
         console.log(`\ndone, thanks - ${(Date.now() - start) / 1000}s`)
         resolve();
       });
