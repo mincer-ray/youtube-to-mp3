@@ -5,7 +5,7 @@ const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath(ffmpegPath);
 
-const toMp3 = (url) => {
+const toMp3 = (url, name) => {
   let start = Date.now();
 
   let stream = ytdl(url, {
@@ -18,7 +18,7 @@ const toMp3 = (url) => {
     format: 'best',
   }).then((data) => {
     const totalTime = parseInt(data.length_seconds, 10);
-    const name = data.title;
+    // const name = data.title;
 
     return new Promise((resolve, reject) => {
       ffmpeg(stream)
