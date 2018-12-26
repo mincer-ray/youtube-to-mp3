@@ -37,8 +37,15 @@ const toMp3 = (url) => {
           // process.stdout.write(`${p.targetSize}kb downloaded`);
         })
         .on('end', () => {
-          fs.rename(`${__dirname}/../output/${name}.mp3`, `${__dirname}/../output/${name}_finished.mp3`)
+          fs.rename(`${__dirname}/../output/${name}.mp3`, `${__dirname}/../output/${name}_finished.mp3`, (err) => {
+            if (err) console.log(err);
+          });
           console.log(`\ndone, thanks - ${(Date.now() - start) / 1000}s`)
+          setTimeout(() => {
+            fs.unlink(`${__dirname}/../output/${name}_finished.mp3`, (err) => {
+              if (err) console.log(err);
+            });
+          }, 600000);
           resolve();
         });
     });
