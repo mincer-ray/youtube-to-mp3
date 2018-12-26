@@ -14,6 +14,7 @@ window.onload = () => {
     notification.innerHTML = 'please wait for conversion';
     
     button.remove();
+    input.remove();
     results.appendChild(notification);
     
     superagent
