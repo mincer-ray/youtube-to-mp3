@@ -11,6 +11,10 @@ body {
     background-color: rgb(0, 0, 0, 0.5);
 }
 
+.text-regular {
+    color: white;
+}
+
 #fileresults, #fileresults a {
     color: white;
 }
