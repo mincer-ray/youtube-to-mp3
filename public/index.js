@@ -41,11 +41,13 @@ window.onload = () => {
             const aTag = document.createElement('a');
             const output = `/output/${id}_finished.mp3`;
             aTag.href = output;
+            notification.innerHTML = `please wait for conversion 100%`;
             aTag.innerHTML = 'right click save as';
             results.appendChild(aTag);
             window.clearInterval(interval);
             getStatus = 0;
           } else {
+            notification.innerHTML = `please wait for conversion ${res.text}`;
             return false;
           }
         })

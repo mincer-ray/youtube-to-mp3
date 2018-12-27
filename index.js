@@ -16,6 +16,14 @@ app.use(morgan('combined'));
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/output', express.static(__dirname + '/output'));
 
+fs.stat(`${__dirname}/output/manifest.json`, (err, stat) => {
+  if (err) {
+    fs.writeFile(`${__dirname}/output/manifest.json`, '{}', (err) => {
+      if (err) throw err;
+    });
+  }
+});
+
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
@@ -36,7 +44,9 @@ app.get('/status', (req, res) => {
   if (fs.existsSync(__dirname + '/output/' + id + '_finished.mp3')) {
     res.send('ready');
   } else {
-    res.send('converting');
+    const manifest = require('./output/manifest.json');
+    const progress = manifest[id].progress;
+    res.send(progress);
   }
 });
 
