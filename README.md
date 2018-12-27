@@ -1,4 +1,6 @@
-# youtube-to-mp3
+# slapdash
+
+live version: www.slapdash.icu
 
 npm install
 
