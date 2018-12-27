@@ -1,4 +1,4 @@
-# youtube-to-mp3
+# slapdash
 
 npm install
 
