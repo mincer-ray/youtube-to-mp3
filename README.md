@@ -1,5 +1,7 @@
 # slapdash
 
+live version: www.slapdash.icu
+
 npm install
 
 webpack
