@@ -1,6 +1,7 @@
 const superagent = require('superagent');
 
-window.onload = () => {  
+window.onload = () => { 
+  const introTitle = window.document.getElementById('title-text'); 
   const input = window.document.getElementById('yt2mp3input');
   const button = window.document.getElementById('submitconvert');
   const results = window.document.getElementById('fileresults');
@@ -15,6 +16,7 @@ window.onload = () => {
     
     button.remove();
     input.remove();
+    introTitle.remove();
     results.appendChild(notification);
     
     superagent
