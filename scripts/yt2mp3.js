@@ -54,8 +54,9 @@ const toMp3 = (url, name, database) => {
 }
 
 const logText = (text) => {
-  readline.cursorTo(process.stdout, 0);
-  process.stdout.write(text);
+  console.log('PROGRESS', text);
+  // readline.cursorTo(process.stdout, 0);
+  // process.stdout.write(text);
 }
 
 const convertTime = (p, totalTime) => {
