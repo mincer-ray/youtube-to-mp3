@@ -5,7 +5,7 @@ const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath(ffmpegPath);
 
-const toMp3 = (url, name) => {
+const toMp3 = (url, name, database) => {
   let start = Date.now();
 
   let stream = ytdl(url, {
@@ -18,13 +18,11 @@ const toMp3 = (url, name) => {
     format: 'best',
   }).then((data) => {
     const totalTime = parseInt(data.length_seconds, 10);
-    const manifest = require(`${__dirname}/../output/manifest.json`);
-    manifest[name] = {
-      title: data.title,
+
+    database.ref(`jobs/${name}`).set({
+      name: data.title,
       progress: '0%',
-    };
-    
-    updateManifest(manifest);
+    })
     
     return new Promise((resolve, reject) => {
       ffmpeg(stream)
@@ -32,9 +30,11 @@ const toMp3 = (url, name) => {
         .save(`${__dirname}/../output/${name}.mp3`)
         .on('progress', (p) => {
           const progressString = convertTime(p, totalTime);
-          manifest[name].progress = progressString;
-          
-          updateManifest(manifest);
+          database.ref(`jobs/${name}`).set({
+            name: data.title,
+            progress: progressString,
+          })         
+
           logText(progressString);
         })
         .on('end', () => {
@@ -50,12 +50,6 @@ const toMp3 = (url, name) => {
           resolve();
         });
     });
-  });
-}
-
-const updateManifest = (manifest) => {
-  fs.writeFile(`${__dirname}/../output/manifest.json`, JSON.stringify(manifest), (err) => {
-    if (err) throw err;
   });
 }
 

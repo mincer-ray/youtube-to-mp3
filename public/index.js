@@ -39,9 +39,9 @@ window.onload = () => {
           id
         })
         .end((err, res) => {
-          if (res.text === 'ready') {
+          if (res.text.length > 5) {
             const aTag = document.createElement('a');
-            const output = `/output/${id}_finished.mp3`;
+            const output = `/output/${res.text}.mp3`;
             aTag.href = output;
             notification.innerHTML = `please wait for conversion 100%`;
             aTag.innerHTML = 'right click save as';
