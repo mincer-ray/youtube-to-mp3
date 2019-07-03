@@ -20,7 +20,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "morgan": "^1.9.1",
     "superagent": "^4.0.0",
-    "ytdl-core": "^0.28.0"
+    "ytdl-core": "^0.29.2"
   },
   "devDependencies": {
     "@webpack-cli/init": "^0.1.2",
