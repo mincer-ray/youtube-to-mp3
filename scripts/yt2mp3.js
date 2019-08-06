@@ -17,10 +17,10 @@ const toMp3 = (url, name, database) => {
     // quality: 'highestaudio',
     format: 'best',
   }).then((data) => {
-    const totalTime = parseInt(data.length_seconds, 10);
+    const totalTime = parseInt(data.player_response.videoDetails.lengthSeconds, 10);
 
     database.ref(`jobs/${name}`).set({
-      name: data.title,
+      name: data.player_response.videoDetails.title,
       progress: '0%',
     })
     
@@ -31,7 +31,7 @@ const toMp3 = (url, name, database) => {
         .on('progress', (p) => {
           const progressString = convertTime(p, totalTime);
           database.ref(`jobs/${name}`).set({
-            name: data.title,
+            name: data.player_response.videoDetails.title,
             progress: progressString,
           })         
 
